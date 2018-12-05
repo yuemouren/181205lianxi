@@ -13,5 +13,6 @@ public class UserMobile {
 	
 	public void findNum(){
 		System.out.println("查询电号号");
+		System.out.println("查询电话话");
 	}
 }
