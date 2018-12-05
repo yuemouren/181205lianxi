@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/echarts.common.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+	<div id="box" style="width:700px;height:500px;"></div>
+	<script type="text/javascript">
+		var mychart = echarts.init($("#box")[0]);
+		var option = {
+			title:{
+				text:'成绩统计饼状图'
+			},
+			legend:{
+				data:['成绩']
+			},
+			tooltip:{},
+			series:[{
+				name:"成绩",
+				type:"pie",
+				data:[]
+			}]
+		}
+		mychart.setOption(option);
+		mychart.showLoading();
+		
+		$.ajax({
+			type:'POST',
+			url:'getPie.do',
+			data:{},
+			dataType:'json',
+			success:function(returndata) {
+			    console.log(returndata);
+				mychart.hideLoading();
+				mychart.setOption({
+					series:[{
+						name:'成绩',
+						type:'pie',
+						data:returndata
+					}]
+				})
+			}
+		})
+	</script>
+</body>
+</html>

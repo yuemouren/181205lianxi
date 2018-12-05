@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/echarts.common.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+	<div id="box" style="width:700px;height:500px;"></div>
+	<script type="text/javascript">
+		var mychart = echarts.init($("#box")[0]);
+		var option = {
+			title : {
+				text : '成绩统计柱状图'
+			},
+			legend : {
+				data : [ '成绩' ]
+			},
+			tooltip : {},
+			xAxis : {
+				data : []
+			},
+			yAxis : {},
+			series : [ {
+				name : "成绩",
+				type : "bar",
+				data : []
+			} ]
+		}
+		mychart.setOption(option);
+		mychart.showLoading();
+		var rows = [];
+		var scores=[];
+		
+		$.ajax({
+			type : 'POST',
+			url : 'getAllStu.do',
+			data : {},
+			dataType : 'json',
+			success : function(returndata) {
+				
+				$(returndata).each(function(index,item){
+					rows.push(item.name);
+					scores.push(item.score);	
+						
+				});
+				mychart.hideLoading();
+				mychart.setOption({
+					xAxis:{
+						data:rows
+					},
+					series:[{
+						name:'成绩',
+						type:'bar',
+						data:scores
+					}]
+				})
+			}
+		})
+	</script>
+</body>
+</html>
